@@ -1,0 +1,65 @@
+package dk.sdu.cbse.common.data;
+
+import java.util.UUID;
+
+public class Entity {
+    private final UUID ID = UUID.randomUUID();
+
+    private double[] polygonCoordinates;
+    private double x;
+    private double y;
+    private double rotation;
+    private float radius;
+
+    public String getID()
+    {
+        return ID.toString();
+    }
+
+    public void setPolygonCoordinates (double... coordinates) // Sets the coordinates of the polygon. (varargs ...)
+    {
+        this.polygonCoordinates=coordinates;
+    }
+
+    public double[] getPolygonCoordinates() // getter for polygon coordinates
+    {
+        return polygonCoordinates;
+    }
+
+    // Getter and setter for coordinates,radius and rotation.
+    public void setX(double x)
+    {
+        this.x = x;
+    }
+    public double getX()
+    {
+       return x;
+    }
+    public void setY(double y)
+    {
+        this.y=y ;
+    }
+    public double getY()
+    {
+        return y;
+    }
+
+    public void setRotation(double rotation)
+    {
+        this.rotation = rotation;
+    }
+    public double getRotation()
+    {
+        return rotation;
+    }
+    public void setRadius(Float radius)
+    {
+        this.radius = radius;
+    }
+    public float getRadius()
+    {
+        return radius;
+    }
+
+
+}

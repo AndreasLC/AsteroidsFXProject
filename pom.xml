@@ -43,7 +43,7 @@
           <arguments>
             <argument>--module-path=mods-mvn</argument>
             <argument>--class-path=libs/*</argument>
-           <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,
+            <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,
 address=127.0.0.1:8000
 </argument>
             <argument>--module=Core/dk.sdu.cbse.App</argument>
@@ -119,5 +119,6 @@ address=127.0.0.1:8000
   </profiles>
   <modules>
     <module>Core</module>
+    <module>Common</module>
   </modules>
 </project>
