@@ -11,6 +11,9 @@ public class Entity {
     private double rotation;
     private float radius;
 
+    private String color = "WHITE"; // Standard color of Entities and bullets.
+    private String fillColor = "BLACK"; // Standard fill color.
+
     public String getID()
     {
         return ID.toString();
@@ -24,6 +27,23 @@ public class Entity {
     public double[] getPolygonCoordinates() // getter for polygon coordinates
     {
         return polygonCoordinates;
+    }
+
+    public String getColor() // getter for color
+    {
+        return color;
+    }
+    public void setColor(String color) // Setter for color
+    {
+        this.color = color;
+    }
+    public String getFillColor() // getter for fill color
+    {
+        return fillColor;
+    }
+    public void setFillColor(String fillColor) // setter for fill color
+    {
+        this.fillColor = fillColor;
     }
 
     // Getter and setter for coordinates,radius and rotation.

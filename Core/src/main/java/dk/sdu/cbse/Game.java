@@ -10,6 +10,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -48,8 +49,23 @@ public class Game {
             if (event.getCode().equals(KeyCode.UP)) {
                 gameData.GetGamekeys().setKey(GameKeys.UP, true);
             }
+            if (event.getCode().equals(KeyCode.DOWN)) {
+                gameData.GetGamekeys().setKey(GameKeys.DOWN, true);
+            }
             if (event.getCode().equals(KeyCode.SPACE)) {
                 gameData.GetGamekeys().setKey(GameKeys.SPACE, true);
+            }
+            if (event.getCode().equals(KeyCode.A)) {
+                gameData.GetGamekeys().setKey(GameKeys.LEFT, true);
+            }
+            if (event.getCode().equals(KeyCode.D)) {
+                gameData.GetGamekeys().setKey(GameKeys.RIGHT, true);
+            }
+            if (event.getCode().equals(KeyCode.W)) {
+                gameData.GetGamekeys().setKey(GameKeys.UP, true);
+            }
+            if (event.getCode().equals(KeyCode.S)) {
+                gameData.GetGamekeys().setKey(GameKeys.DOWN, true);
             }
         });
         scene.setOnKeyReleased(event -> {
@@ -62,10 +78,24 @@ public class Game {
             if (event.getCode().equals(KeyCode.UP)) {
                 gameData.GetGamekeys().setKey(GameKeys.UP, false);
             }
+            if (event.getCode().equals(KeyCode.DOWN)) {
+                gameData.GetGamekeys().setKey(GameKeys.DOWN, false);
+            }
             if (event.getCode().equals(KeyCode.SPACE)) {
                 gameData.GetGamekeys().setKey(GameKeys.SPACE, false);
             }
-
+            if (event.getCode().equals(KeyCode.A)) {
+                gameData.GetGamekeys().setKey(GameKeys.LEFT, false);
+            }
+            if (event.getCode().equals(KeyCode.D)) {
+                gameData.GetGamekeys().setKey(GameKeys.RIGHT, false);
+            }
+            if (event.getCode().equals(KeyCode.W)) {
+                gameData.GetGamekeys().setKey(GameKeys.UP, false);
+            }
+            if (event.getCode().equals(KeyCode.S)) {
+                gameData.GetGamekeys().setKey(GameKeys.DOWN, false);
+            }
         });
         for (IGamePluginService iGamePlugin : getGamePluginServices()) {
             iGamePlugin.start(gameData, world);
@@ -119,6 +149,8 @@ public class Game {
             polygon.setTranslateX(entity.getX());
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
+            polygon.setStroke(Color.web(entity.getColor()));
+            polygon.setFill(Color.web(entity.getFillColor()));
         }
     }
 

@@ -119,5 +119,6 @@
     <module>Core</module>
       <module>Player</module>
     <module>CommonBullet</module>
+    <module>Bullet</module>
   </modules>
 </project>
