@@ -2,8 +2,8 @@ package dk.sdu.cbse.common.data;
 
 public class GameData {
 
-    private int displayWidth = 1920;
-    private int displayHeight = 1080;
+    private int displayWidth = 1024;
+    private int displayHeight = 768;
 
     private final GameKeys keys = new GameKeys();
 

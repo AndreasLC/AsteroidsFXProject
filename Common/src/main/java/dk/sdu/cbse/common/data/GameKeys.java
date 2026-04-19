@@ -4,12 +4,13 @@ public class GameKeys {
     private static boolean[] keys; // Newly pressed keys
     private static boolean[]pkeys; // Previous pressed keys.
 
-    private static final int Num_Keys = 4; // Total of 4 keys to press
+    private static final int Num_Keys = 5; // Total of 5 keys to press
 
     public static final int UP = 0;
-    public static final int LEFT = 1;
-    public static final int RIGHT =2;
-    public static final int SPACE = 3;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT =3;
+    public static final int SPACE = 4;
 
 
     public GameKeys() // Contructer inizialing the two arrays with the given size of 4. All set to false, because this is default.
