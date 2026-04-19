@@ -28,7 +28,7 @@ public class AsteroidsPlugin implements IGamePluginService {
         asteroid.setColor("BLACK");
         asteroid.setFillColor("GREY");
         Random rnd = new Random();
-        float size = rnd.nextInt(10) + 5; // random size between 5 and 15 for asteroid. Change if to big or small.
+        float size = rnd.nextInt(35) + 10; // random size between 5 and 15 for asteroid. Change if to big or small.
 
         int points = 8; // points (hjørner)
         double[] coords = new double[points * 2];
@@ -48,7 +48,7 @@ public class AsteroidsPlugin implements IGamePluginService {
         asteroid.setX(0);
         asteroid.setY(0);
         asteroid.setRadius(size);
-        asteroid.setRotation(rnd.nextInt(360)); // rotates the asteoids in random direction in full 360 spectrum.
+        asteroid.setRotation(rnd.nextInt(360)); // rotates the asteroids in random direction in full 360 spectrum.
         return asteroid;
 
     }
