@@ -13,11 +13,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
             // Movement of player
             if(gameData.GetGamekeys().keyIsDown(GameKeys.LEFT))
             {
-                player.setRotation(player.getRotation()-5); // Rotate left, change rotation if to fast or slow.
+                player.setRotation(player.getRotation()-1); // Rotate left, change rotation if to fast or slow.
             }
             if (gameData.GetGamekeys().keyIsDown(GameKeys.RIGHT))
             {
-                player.setRotation(player.getRotation()+5); // Rotate right
+                player.setRotation(player.getRotation()+1); // Rotate right
             }
             if(gameData.GetGamekeys().keyIsDown(GameKeys.UP)) // Move forward
             {
