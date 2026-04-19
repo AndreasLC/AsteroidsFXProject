@@ -22,10 +22,10 @@ public class PlayerPlugin implements IGamePluginService {
 
     private Entity createPlayerShip(GameData gameData)
     {
-        Entity player = new Entity();
+        Entity player = new Player(); // Create Entity which is a playership.
         player.setPolygonCoordinates(-5,-5,10,0,-5,5); // makes a triangle spaceship.
         player.setX(gameData.getDisplayHeight()/2); // to make sure that the player spawn in the middle of the screen.
-        player.setY(gameData.getDisplayHeight()/2);
+        player.setY(gameData.getDisplayWidth()/2);
         player.setRadius(8f);
         return player;
     }
