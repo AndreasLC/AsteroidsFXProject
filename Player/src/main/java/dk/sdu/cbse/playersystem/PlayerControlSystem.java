@@ -53,15 +53,21 @@ public class PlayerControlSystem implements IEntityProcessingService {
         for (Entity e : world.getEntities(Player.class))  // Set the color
         {
             Player player = (Player) e;
-            if(player.isInvisible())
+            if(player.isBlinkingRed())
             {
                 long now = System.nanoTime();
-                player.setColor( now % 200_000_000L < 100_000_000L ? "WHITE" : "BLACK"); // Over 100ms black under 100 White
+                player.setColor( now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
+                player.setFillColor( now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
+            }
+            else if(player.isInvisible())
+            {
+                long now = System.nanoTime();
+                player.setColor( now % 200_000_000L < 100_000_000L ? "WHITE" : "BLACK");
                 player.setFillColor( now % 200_000_000L < 100_000_000L ? "WHITE" : "BLACK");
             }
             else
             {
-                player.setColor("BLACK"); // Change the color of the player back to BLACK when not Invisible.
+                player.setColor("BLACK"); // Change the color of the player back to BLACK when not invisible
                 player.setFillColor("BLACK");
             }
         }

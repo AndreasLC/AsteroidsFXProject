@@ -26,4 +26,8 @@ public class Player extends Entity {
     {
         invisibleUntil = System.nanoTime() + durationNano;
     }
+
+    private long blinkRedUntil = 0;
+    public boolean isBlinkingRed() {return System.nanoTime() < blinkRedUntil;}
+    public void setBlinkRedUntil(long durationNano) {blinkRedUntil = System.nanoTime() + durationNano;}
 }

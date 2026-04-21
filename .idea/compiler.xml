@@ -8,9 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Bullet" />
         <module name="Player" />
+        <module name="CommonEnemy" />
         <module name="Asteroids" />
         <module name="CommonAsteroids" />
         <module name="Collision" />
+        <module name="Enemy" />
         <module name="CommonBullet" />
         <module name="Core" />
         <module name="Common" />
