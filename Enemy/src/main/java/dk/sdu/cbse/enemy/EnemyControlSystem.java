@@ -9,7 +9,7 @@ import dk.sdu.cbse.common.services.IEntityProcessingService;
 import static dk.sdu.cbse.enemy.EnemyPlugin.createEnemy;
 
 public class EnemyControlSystem implements IEntityProcessingService {
-    private static final long spawnInterval =  5_000_000_000L; // spawn enemy every 30 seconds.
+    private static final long spawnInterval =  30_000_000_000L; // spawn enemy every 30 seconds.
     private long lastSpawnTime = System.nanoTime(); // last spawn time
     private static final double speed = 0.5;
     private static final long directionChangeInterval = 2_000_000_000L; // 2 seconds i Nanoseconds
