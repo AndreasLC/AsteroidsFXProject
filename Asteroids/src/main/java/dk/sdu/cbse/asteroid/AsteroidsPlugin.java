@@ -28,7 +28,7 @@ public class AsteroidsPlugin implements IGamePluginService {
 
     }
 
-    private Entity createAsteroid(GameData gameData) {
+     static Entity createAsteroid(GameData gameData) {
         Entity asteroid = new Asteroid();
         asteroid.setColor("BLACK");
         asteroid.setFillColor("GREY");
