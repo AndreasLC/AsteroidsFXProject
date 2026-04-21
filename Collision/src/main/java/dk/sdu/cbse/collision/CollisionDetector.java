@@ -35,11 +35,13 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         world.removeEntity(entity1);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity2, world));
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // add one to destroyed asteroids
                         world.removeEntity(entity2);
                     } else if (entity1 instanceof Asteroid && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity1, world));
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // add one to destroyed asteroids
                         world.removeEntity(entity1);
                     }
                     else if (entity1 instanceof Player && entity2 instanceof Asteroid || entity1 instanceof Asteroid && entity2 instanceof Player) // checks if it is a collision between a player and an asteroid
@@ -55,6 +57,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         }
                         if(player.isInvisible())continue; // if the player is invisible it cant be hit by asteroids. Cooldown after hit by Entity
                         player.setLives(player.getLives() - 1);
+                        gameData.setLives(player.getLives()); // set the game lives to the players lives.
                         player.setInvisibleUntil(3_000_000_000L); // 3 seconds cooldown.
                         if (player.getLives() <= 0) {
                             world.removeEntity(player);
@@ -62,6 +65,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         getAsteroidSplitters().stream().findFirst() //splits the asteroid and removes the first asteroid when you hit it and still have lives.
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
                         world.removeEntity(asteroid);
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // Also counts as destroying astroid if you kamikaze ;).
+
                     }
                     else {
                         world.removeEntity(entity1);
