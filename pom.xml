@@ -122,5 +122,6 @@
     <module>Bullet</module>
     <module>Asteroids</module>
     <module>CommonAsteroids</module>
+      <module>Collision</module>
   </modules>
 </project>
