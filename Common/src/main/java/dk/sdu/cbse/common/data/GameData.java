@@ -4,6 +4,16 @@ public class GameData {
 
     private int displayWidth = 1024;
     private int displayHeight = 768;
+    private int lives = 3;
+    private int asteroidsDestroyed = 0;
+    public int getLives(){return lives;}
+    public void setLives(int lives){this.lives = lives;}
+
+    public int getAsteroidsDestroyed(){return asteroidsDestroyed;}
+
+    public void setAsteroidsDestroyed(int asteroidsDestroyed) {
+        this.asteroidsDestroyed = asteroidsDestroyed;
+    }
 
     private final GameKeys keys = new GameKeys();
 

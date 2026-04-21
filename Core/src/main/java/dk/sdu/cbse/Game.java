@@ -27,6 +27,8 @@ public class Game {
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProcessingService> entityProcessingServiceList;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
+    private final Text livesText = new Text(10, 40, "Lives left: 3");
+    private final Text destroyedText = new Text(10, 20, "Destroyed asteroids: 0");
 
     public Game(List<IGamePluginService> gamePluginServices, List<IEntityProcessingService> entityProcessingServiceList, List<IPostEntityProcessingService> postEntityProcessingServices) {
         this.gamePluginServices = gamePluginServices;
@@ -35,9 +37,9 @@ public class Game {
     }
 
     public void start(Stage window) throws Exception {
-        Text text = new Text(10, 20, "Destroyed asteroids: 0");
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        gameWindow.getChildren().add(text);
+        gameWindow.getChildren().add(destroyedText);
+        gameWindow.getChildren().add(livesText);
         Scene scene = new Scene(gameWindow);
         scene.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
@@ -152,6 +154,8 @@ public class Game {
             polygon.setStroke(Color.web(entity.getColor()));
             polygon.setFill(Color.web(entity.getFillColor()));
         }
+        livesText.setText("Lives Left : "+(gameData.getLives())); // update liveso and how many asteroids destroyed.
+        destroyedText.setText("Asteroids Destroyed: " + gameData.getAsteroidsDestroyed());
     }
 
 

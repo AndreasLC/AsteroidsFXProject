@@ -10,7 +10,7 @@ import java.util.Random;
 public class AsteroidSplitterImpl implements IAsteroidSplitter {
     @Override
     public void createAsteroidsSpilt(Entity e, World w) {
-        if (e.getRadius() <10) return; // asteroid is too small to split.
+        if (e.getRadius() <25) return; // asteroid is too small to split.
         for(int i = 0 ; i<2 ; i++ )
         {
             Asteroid asteroid = new Asteroid();

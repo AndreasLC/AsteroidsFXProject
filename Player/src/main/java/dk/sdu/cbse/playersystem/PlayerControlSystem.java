@@ -5,6 +5,7 @@ import dk.sdu.cbse.common.bullet.BulletSPI;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.data.GameKeys;
+import dk.sdu.cbse.common.player.Player;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
 
 import java.util.Collection;
@@ -47,6 +48,21 @@ public class PlayerControlSystem implements IEntityProcessingService {
                         spi -> world.addEntity(spi.createBullet(player, gameData))
                 );
                 lastShot = now;}
+            }
+        }
+        for (Entity e : world.getEntities(Player.class))  // Set the color
+        {
+            Player player = (Player) e;
+            if(player.isInvisible())
+            {
+                long now = System.nanoTime();
+                player.setColor( now % 200_000_000L < 100_000_000L ? "WHITE" : "BLACK"); // Over 100ms black under 100 White
+                player.setFillColor( now % 200_000_000L < 100_000_000L ? "WHITE" : "BLACK");
+            }
+            else
+            {
+                player.setColor("BLACK"); // Change the color of the player back to BLACK when not Invisible.
+                player.setFillColor("BLACK");
             }
         }
     }
