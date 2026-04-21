@@ -15,7 +15,7 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         {
             Asteroid asteroid = new Asteroid();
             asteroid.setColor("BLACK"); // Changes the color of the asteroids to a darker gray to give a field of depth.
-            asteroid.setFillColor("DARKGRAY");
+            asteroid.setFillColor("DIMGRAY");
 
             float size = e.getRadius()/2; // changes the size of the asteroid to half the size.
             Random rnd = new Random();
