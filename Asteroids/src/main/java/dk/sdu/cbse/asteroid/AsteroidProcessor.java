@@ -7,10 +7,22 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
+import static dk.sdu.cbse.asteroid.AsteroidsPlugin.createAsteroid;
 
 public class AsteroidProcessor implements IEntityProcessingService {
+    private int frameCount = 0;
     @Override
     public void process(GameData gameData, World world) {
+
+        // Spawn an asteroid each 5 second. 360 hz
+        frameCount++;
+        if(frameCount % 1800 == 0)
+        {
+            Entity asteroid = createAsteroid(gameData); // Create Entity.
+            world.addEntity(asteroid); // Add Entity to the world.
+        }
+
+
 
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
             double changeX = Math.cos(Math.toRadians(asteroid.getRotation()));

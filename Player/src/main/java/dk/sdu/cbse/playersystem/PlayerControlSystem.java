@@ -13,6 +13,7 @@ import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IEntityProcessingService {
+    private long lastShot = System.nanoTime(); //
     @Override
     public void process(GameData gameData, World world) {
         for (Entity player : world.getEntities(Player.class)) {
@@ -40,9 +41,12 @@ public class PlayerControlSystem implements IEntityProcessingService {
             }
             if (gameData.GetGamekeys().keyIsDown(GameKeys.SPACE))
             {
+                long now = System.nanoTime();
+                if (now - lastShot > 250_000_000L) { // 0.25 second cooldown for bullets.
                 getBulletSPIs().stream().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(player, gameData))
                 );
+                lastShot = now;}
             }
         }
     }
