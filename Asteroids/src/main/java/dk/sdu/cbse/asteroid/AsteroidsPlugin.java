@@ -11,8 +11,13 @@ import java.util.Random;
 public class AsteroidsPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {  // add asteroids to world.
-        Entity asteroid = createAsteroid(gameData);
-        world.addEntity(asteroid);
+
+        for (int i=0 ;i<5 ; i++) // spawn 5 asteroids when starting the game.
+        {
+            Entity asteroid = createAsteroid(gameData); // Create Entity.
+            world.addEntity(asteroid); // Add Entity to the world.
+        }
+
     }
 
     @Override
