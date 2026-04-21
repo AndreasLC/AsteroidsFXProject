@@ -9,14 +9,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Collision</artifactId>
+    <artifactId>Enemy</artifactId>
     <packaging>jar</packaging>
     <dependencies>
-        <dependency>
-            <groupId>dk.sdu.cbse</groupId>
-            <artifactId>Common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>dk.sdu.cbse</groupId>
             <artifactId>CommonBullet</artifactId>
@@ -24,14 +19,9 @@
         </dependency>
         <dependency>
             <groupId>dk.sdu.cbse</groupId>
-            <artifactId>CommonAsteroids</artifactId>
+            <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>dk.sdu.cbse</groupId>
-            <artifactId>CommonPlayer</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>dk.sdu.cbse</groupId>
