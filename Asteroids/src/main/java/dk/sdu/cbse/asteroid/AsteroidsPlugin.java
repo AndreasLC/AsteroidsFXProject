@@ -33,7 +33,7 @@ public class AsteroidsPlugin implements IGamePluginService {
         asteroid.setColor("BLACK");
         asteroid.setFillColor("GREY");
         Random rnd = new Random();
-        float size = rnd.nextInt(35) + 10; // random size between 5 and 15 for asteroid. Change if to big or small.
+        float size = rnd.nextInt(50)+10; // random size between 10 - 59 for asteroid. Change if to big or small.
 
         int points = 8; // points (hjørner)
         double[] coords = new double[points * 2];
