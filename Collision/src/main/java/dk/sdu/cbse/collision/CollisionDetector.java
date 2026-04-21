@@ -4,6 +4,7 @@ import dk.sdu.cbse.common.asteroids.Asteroid;
 import dk.sdu.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
+import dk.sdu.cbse.common.player.Player;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.bullet.Bullet;
@@ -40,7 +41,29 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity1, world));
                         world.removeEntity(entity1);
-                    } else {
+                    }
+                    else if (entity1 instanceof Player && entity2 instanceof Asteroid || entity1 instanceof Asteroid && entity2 instanceof Player) // checks if it is a collision between a player and an asteroid
+                    {
+                        Player player;
+                        Entity asteroid;
+                        if (entity1 instanceof Player) {
+                            player = (Player) entity1;
+                            asteroid = entity2;
+                        } else {
+                            player = (Player) entity2;
+                            asteroid = entity1;
+                        }
+                        if(player.isInvisible())continue; // if the player is invisible it cant be hit by asteroids. Cooldown after hit by Entity
+                        player.setLives(player.getLives() - 1);
+                        player.setInvisibleUntil(3_000_000_000L); // 3 seconds cooldown.
+                        if (player.getLives() <= 0) {
+                            world.removeEntity(player);
+                        }
+                        getAsteroidSplitters().stream().findFirst() //splits the asteroid and removes the first asteroid when you hit it and still have lives.
+                                .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
+                        world.removeEntity(asteroid);
+                    }
+                    else {
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
                     }
