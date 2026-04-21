@@ -28,8 +28,8 @@ public class BulletControlSystem implements IEntityProcessingService , BulletSPI
         bullet.setColor("RED");
         bullet.setFillColor("RED");
         bullet.setPolygonCoordinates(-20, -1,  20, -1,  20, 1,  -20, 1); // longer bullet, to make it look like a laser.
-        bullet.setX(shooter.getX() - 9 + changeX * 30);
-        bullet.setY(shooter.getY() + changeY * 30);
+        bullet.setX(shooter.getX() - 9 + changeX * 50);
+        bullet.setY(shooter.getY() + changeY * 50);
         bullet.setRotation(shooter.getRotation());
         bullet.setRadius(20f);
         return bullet;
