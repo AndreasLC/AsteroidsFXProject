@@ -1,12 +1,21 @@
 package dk.sdu.cbse.collision;
 
+import dk.sdu.cbse.common.asteroids.Asteroid;
+import dk.sdu.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.bullet.Bullet;
+import dk.sdu.cbse.common.util.ServiceLocator;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.ServiceLoader;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class CollisionDetector implements IPostEntityProcessingService {
     @Override
@@ -20,9 +29,21 @@ public class CollisionDetector implements IPostEntityProcessingService {
 
                 if (entity1.getClass() == entity2.getClass()) continue; // if to of the same entities collide they won't get removed.
 
-                if (collision(entity1, entity2)) { // If the collide remove entities.
-                    world.removeEntity(entity1);
-                    world.removeEntity(entity2);
+                if (collision(entity1, entity2)) {
+                    if (entity1 instanceof Bullet && entity2 instanceof Asteroid) {
+                        world.removeEntity(entity1);
+                        getAsteroidSplitters().stream().findFirst()
+                                .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity2, world));
+                        world.removeEntity(entity2);
+                    } else if (entity1 instanceof Asteroid && entity2 instanceof Bullet) {
+                        world.removeEntity(entity2);
+                        getAsteroidSplitters().stream().findFirst()
+                                .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity1, world));
+                        world.removeEntity(entity1);
+                    } else {
+                        world.removeEntity(entity1);
+                        world.removeEntity(entity2);
+                    }
                 }
             }
         }
@@ -33,6 +54,11 @@ public class CollisionDetector implements IPostEntityProcessingService {
         double distanceSquared = dx * dx + dy * dy; // Squared distance between them. Instead of using a^2+b^2 = c^2
         double radiusSum = a.getRadius() + b.getRadius();
         return distanceSquared <= radiusSum * radiusSum; // Checking the SquaredDistance with the SquaredRadiusSum instead of using math.sqrt to get the real distance.
+    }
+
+    private Collection<? extends IAsteroidSplitter> getAsteroidSplitters() { // loads all implementations of IAsteroidSplitter from module-path and returns it as a list.
+        return
+                ServiceLoader.load(IAsteroidSplitter.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
 
