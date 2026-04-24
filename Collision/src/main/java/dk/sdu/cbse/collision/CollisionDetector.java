@@ -43,14 +43,14 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         world.removeEntity(entity1);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity2, world));
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
+                        gameData.getScoreService().ifPresent(s -> s.addScore(1));
                         world.removeEntity(entity2);
 
                     } else if (entity1 instanceof Asteroid && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity1, world));
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
+                        gameData.getScoreService().ifPresent(s -> s.addScore(1));
                         world.removeEntity(entity1);
 
                     } else if (e1IsPlayer && entity2 instanceof Asteroid || entity1 instanceof Asteroid && e2IsPlayer) {
@@ -59,13 +59,13 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         IDamageable player = (IDamageable) playerEntity;
                         if (player.isInvisible()) continue;
                         player.setLives(player.getLives() - 1);
-                        gameData.setLives(player.getLives());
+                        gameData.getScoreService().ifPresent(s -> s.setLives(player.getLives()));
                         player.onHit();
                         if (player.getLives() <= 0) world.removeEntity(playerEntity);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
                         world.removeEntity(asteroid);
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
+                        gameData.getScoreService().ifPresent(s -> s.addScore(1));
 
                     } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);

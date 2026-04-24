@@ -8,4 +8,5 @@ dk\sdu\cbse\common\services\IEntityProcessingService.class
 dk\sdu\cbse\common\services\IPostEntityProcessingService.class
 dk\sdu\cbse\common\data\World.class
 dk\sdu\cbse\common\util\ServiceLocator.class
+dk\sdu\cbse\common\services\IScoreService.class
 dk\sdu\cbse\common\data\IDamageable.class

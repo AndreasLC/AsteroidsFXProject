@@ -6,6 +6,7 @@ import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.cbse.common.services.IScoreService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
@@ -99,6 +101,9 @@ public class Game {
                 gameData.GetGamekeys().setKey(GameKeys.DOWN, false);
             }
         });
+        ServiceLoader.load(IScoreService.class).findFirst()
+                .ifPresent(gameData::setScoreService);
+
         for (IGamePluginService iGamePlugin : getGamePluginServices()) {
             iGamePlugin.start(gameData, world);
         }
@@ -154,8 +159,10 @@ public class Game {
             polygon.setStroke(Color.web(entity.getColor()));
             polygon.setFill(Color.web(entity.getFillColor()));
         }
-        livesText.setText("Lives Left : "+(gameData.getLives())); // update liveso and how many asteroids destroyed.
-        destroyedText.setText("Asteroids Destroyed: " + gameData.getAsteroidsDestroyed());
+        gameData.getScoreService().ifPresent(s -> {
+            livesText.setText("Lives Left: " + s.getLives());
+            destroyedText.setText("Asteroids Destroyed: " + s.getScore());
+        });
     }
 
 

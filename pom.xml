@@ -124,5 +124,6 @@
     <module>CommonAsteroids</module>
       <module>Collision</module>
 <module>Enemy</module>
+    <module>Score</module>
   </modules>
 </project>
