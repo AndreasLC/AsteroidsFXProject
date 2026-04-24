@@ -24,7 +24,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
         for (Entity e : world.getEntities(Enemy.class))
         {
-            if (e.isBlinkingRed()) {
+            Enemy enemy = (Enemy) e;
+            if (enemy.isBlinkingRed()) {
                 e.setColor(now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
                 e.setFillColor(now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
             } else {

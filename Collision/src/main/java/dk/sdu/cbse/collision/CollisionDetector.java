@@ -5,6 +5,8 @@ import dk.sdu.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.cbse.common.bullet.Bullet;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
+import dk.sdu.cbse.common.data.IDamageable;
+import dk.sdu.cbse.common.data.IHealth;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 
@@ -17,9 +19,9 @@ import static java.util.stream.Collectors.toList;
 
 public class CollisionDetector implements IPostEntityProcessingService {
 
-    // Boolean to check if the type has declared Player or Enemy.
     private boolean isPlayer(Entity e) { return "Player".equals(e.getType()); }
     private boolean isEnemy(Entity e) { return "Enemy".equals(e.getType()); }
+
     @Override
     public void process(GameData gameData, World world) {
         List<Entity> entities = new ArrayList<>(world.getEntities());
@@ -29,7 +31,12 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 Entity entity1 = entities.get(i);
                 Entity entity2 = entities.get(j);
 
-                if (entity1.getClass() == entity2.getClass()) continue; // If objects is the same class bullet or asteroids Continue.
+                if (entity1.getClass() == entity2.getClass()) continue;
+
+                boolean e1IsPlayer = isPlayer(entity1);
+                boolean e1IsEnemy  = isEnemy(entity1);
+                boolean e2IsPlayer = isPlayer(entity2);
+                boolean e2IsEnemy  = isEnemy(entity2);
 
                 if (collision(entity1, entity2)) {
                     if (entity1 instanceof Bullet && entity2 instanceof Asteroid) {
@@ -46,38 +53,37 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
                         world.removeEntity(entity1);
 
-                    } else if (isPlayer(entity1) && entity2 instanceof Asteroid || entity1 instanceof Asteroid && isPlayer(entity2)) {
-                        Entity player = isPlayer(entity1) ? entity1 : entity2;
-                        Entity asteroid = isPlayer(entity1) ? entity2 : entity1;
+                    } else if (e1IsPlayer && entity2 instanceof Asteroid || entity1 instanceof Asteroid && e2IsPlayer) {
+                        Entity playerEntity = e1IsPlayer ? entity1 : entity2;
+                        Entity asteroid = e1IsPlayer ? entity2 : entity1;
+                        IDamageable player = (IDamageable) playerEntity;
                         if (player.isInvisible()) continue;
                         player.setLives(player.getLives() - 1);
                         gameData.setLives(player.getLives());
                         player.setInvisibleUntil(3_000_000_000L);
-                        if (player.getLives() <= 0) world.removeEntity(player);
+                        if (player.getLives() <= 0) world.removeEntity(playerEntity);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
                         world.removeEntity(asteroid);
                         gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
 
-                    } else if (entity1 instanceof Bullet && isEnemy(entity2)) {
+                    } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);
-                        entity2.setHealth(entity2.getHealth() - 25);
-                        if (entity2.getHealth() <= 0) world.removeEntity(entity2);
+                        IHealth enemy = (IHealth) entity2;
+                        enemy.setHealth(enemy.getHealth() - 25);
+                        if (enemy.getHealth() <= 0) world.removeEntity(entity2);
 
-                    } else if (isEnemy(entity1) && entity2 instanceof Bullet) {
+                    } else if (e1IsEnemy && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
-                        entity1.setHealth(entity1.getHealth() - 25);
-                        if (entity1.getHealth() <= 0) world.removeEntity(entity1);
+                        IHealth enemy = (IHealth) entity1;
+                        enemy.setHealth(enemy.getHealth() - 25);
+                        if (enemy.getHealth() <= 0) world.removeEntity(entity1);
 
-                    } else if (isPlayer(entity1) && isEnemy(entity2)) {
-                        entity1.setBlinkRedUntil(1_500_000_000L);
-                        entity2.setBlinkRedUntil(1_500_000_000L);
+                    } else if (e1IsPlayer && e2IsEnemy || e1IsEnemy && e2IsPlayer) {
+                        ((IDamageable) entity1).setBlinkRedUntil(1_500_000_000L);
+                        ((IDamageable) entity2).setBlinkRedUntil(1_500_000_000L);
 
-                    } else if (isEnemy(entity1) && isPlayer(entity2)) {
-                        entity1.setBlinkRedUntil(1_500_000_000L);
-                        entity2.setBlinkRedUntil(1_500_000_000L);
-
-                    } else if (isEnemy(entity1) || isEnemy(entity2)) {
+                    } else if (e1IsEnemy || e2IsEnemy) {
                         // Do nothing if Enemy collides with another enemy
 
                     } else {
@@ -88,6 +94,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
             }
         }
     }
+
     public boolean collision(Entity a, Entity b) {
         double dx = a.getX() - b.getX();
         double dy = a.getY() - b.getY();
