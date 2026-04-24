@@ -5,6 +5,8 @@ import java.util.UUID;
 public class Entity {
     private final UUID ID = UUID.randomUUID();
 
+    private String type;
+
     private double[] polygonCoordinates;
     private double x;
     private double y;
@@ -18,6 +20,9 @@ public class Entity {
     {
         return ID.toString();
     }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
     public void setPolygonCoordinates (double... coordinates) // Sets the coordinates of the polygon. (varargs ...)
     {

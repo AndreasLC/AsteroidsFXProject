@@ -2,108 +2,91 @@ package dk.sdu.cbse.collision;
 
 import dk.sdu.cbse.common.asteroids.Asteroid;
 import dk.sdu.cbse.common.asteroids.IAsteroidSplitter;
-import dk.sdu.cbse.common.data.GameData;
-import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.player.Player;
-import dk.sdu.cbse.common.services.IPostEntityProcessingService;
-import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.bullet.Bullet;
-import dk.sdu.cbse.common.enemy.Enemy;
-import dk.sdu.cbse.common.util.ServiceLocator;
+import dk.sdu.cbse.common.data.Entity;
+import dk.sdu.cbse.common.data.GameData;
+import dk.sdu.cbse.common.data.IDamageable;
+import dk.sdu.cbse.common.data.IHealth;
+import dk.sdu.cbse.common.data.World;
+import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 public class CollisionDetector implements IPostEntityProcessingService {
+
+    private boolean isPlayer(Entity e) { return "Player".equals(e.getType()); }
+    private boolean isEnemy(Entity e) { return "Enemy".equals(e.getType()); }
+
     @Override
     public void process(GameData gameData, World world) {
-        List<Entity> entities = new ArrayList<>(world.getEntities()); // Store all entity's in a List
+        List<Entity> entities = new ArrayList<>(world.getEntities());
 
-        for (int i = 0; i < entities.size(); i++) {  // nested for loop that iterates over the list and secures that the pair aren't checked twice fx. AB and BA
+        for (int i = 0; i < entities.size(); i++) {
             for (int j = i + 1; j < entities.size(); j++) {
                 Entity entity1 = entities.get(i);
                 Entity entity2 = entities.get(j);
 
-                if (entity1.getClass() == entity2.getClass()) continue; // if to of the same entities collide they won't get removed.
+                if (entity1.getClass() == entity2.getClass()) continue;
 
-                // Collision Bullets and Asteroids.
+                boolean e1IsPlayer = isPlayer(entity1);
+                boolean e1IsEnemy  = isEnemy(entity1);
+                boolean e2IsPlayer = isPlayer(entity2);
+                boolean e2IsEnemy  = isEnemy(entity2);
+
                 if (collision(entity1, entity2)) {
                     if (entity1 instanceof Bullet && entity2 instanceof Asteroid) {
                         world.removeEntity(entity1);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity2, world));
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // add one to destroyed asteroids
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
                         world.removeEntity(entity2);
+
                     } else if (entity1 instanceof Asteroid && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(entity1, world));
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // add one to destroyed asteroids
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
                         world.removeEntity(entity1);
-                    }
 
-
-                    else if (entity1 instanceof Player && entity2 instanceof Asteroid || entity1 instanceof Asteroid && entity2 instanceof Player) // checks if it is a collision between a player and an asteroid
-                    {
-                        Player player;
-                        Entity asteroid;
-                        if (entity1 instanceof Player) {
-                            player = (Player) entity1;
-                            asteroid = entity2;
-                        } else {
-                            player = (Player) entity2;
-                            asteroid = entity1;
-                        }
-                        if(player.isInvisible())continue; // if the player is invisible it cant be hit by asteroids. Cooldown after hit by Entity
+                    } else if (e1IsPlayer && entity2 instanceof Asteroid || entity1 instanceof Asteroid && e2IsPlayer) {
+                        Entity playerEntity = e1IsPlayer ? entity1 : entity2;
+                        Entity asteroid = e1IsPlayer ? entity2 : entity1;
+                        IDamageable player = (IDamageable) playerEntity;
+                        if (player.isInvisible()) continue;
                         player.setLives(player.getLives() - 1);
-                        gameData.setLives(player.getLives()); // set the game lives to the players lives.
-                        player.setInvisibleUntil(3_000_000_000L); // 3 seconds cooldown.
-                        if (player.getLives() <= 0) {
-                            world.removeEntity(player);
-                        }
-                        getAsteroidSplitters().stream().findFirst() //splits the asteroid and removes the first asteroid when you hit it and still have lives.
+                        gameData.setLives(player.getLives());
+                        player.onHit();
+                        if (player.getLives() <= 0) world.removeEntity(playerEntity);
+                        getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
                         world.removeEntity(asteroid);
-                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() +1); // Also counts as destroying astroid if you kamikaze ;).
+                        gameData.setAsteroidsDestroyed(gameData.getAsteroidsDestroyed() + 1);
 
-                    }
-
-                    // Enemy Collision with bullet
-                    else if (entity1 instanceof Bullet && entity2 instanceof Enemy) {
+                    } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);
-                        Enemy enemy = (Enemy) entity2;
+                        IHealth enemy = (IHealth) entity2;
                         enemy.setHealth(enemy.getHealth() - 25);
-                        if (enemy.getHealth() <= 0) world.removeEntity(enemy);
-                    } else if (entity1 instanceof Enemy && entity2 instanceof Bullet) {
+                        if (enemy.getHealth() <= 0) world.removeEntity(entity2);
+
+                    } else if (e1IsEnemy && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
-                        Enemy enemy = (Enemy) entity1;
+                        IHealth enemy = (IHealth) entity1;
                         enemy.setHealth(enemy.getHealth() - 25);
-                        if (enemy.getHealth() <= 0) world.removeEntity(enemy);
-                    }
+                        if (enemy.getHealth() <= 0) world.removeEntity(entity1);
 
-                    //  Collision with player
-                    else if (entity1 instanceof Player && entity2 instanceof Enemy)
-                    {
-                        ((Player) entity1).setBlinkRedUntil(1_500_000_000L);
-                        ((Enemy) entity2).setBlinkRedUntil(1_500_000_000L);
-                    }
-                    else if (entity1 instanceof Enemy && entity2 instanceof Player)
-                    {
-                        ((Enemy) entity1).setBlinkRedUntil(1_500_000_000L);
-                        ((Player) entity2).setBlinkRedUntil(1_500_000_000L);
-                    }
+                    } else if (e1IsPlayer && e2IsEnemy || e1IsEnemy && e2IsPlayer) {
+                        ((IDamageable) entity1).onHit();
+                        ((IDamageable) entity2).onHit();
 
-                    else if (entity1 instanceof Enemy || entity2 instanceof Enemy)
-                    {
-                        // Do nothing if Enemy collided with another enemy
-                    }
+                    } else if (e1IsEnemy || e2IsEnemy) {
+                        // Do nothing if Enemy collides with another enemy
 
-                    else {
+                    } else {
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
                     }
@@ -111,17 +94,16 @@ public class CollisionDetector implements IPostEntityProcessingService {
             }
         }
     }
+
     public boolean collision(Entity a, Entity b) {
-        double dx = a.getX() - b.getX(); // distance between the entities X
-        double dy = a.getY() - b.getY(); // distance between the entities Y
-        double distanceSquared = dx * dx + dy * dy; // Squared distance between them. Instead of using a^2+b^2 = c^2
+        double dx = a.getX() - b.getX();
+        double dy = a.getY() - b.getY();
+        double distanceSquared = dx * dx + dy * dy;
         double radiusSum = a.getRadius() + b.getRadius();
-        return distanceSquared <= radiusSum * radiusSum; // Checking the SquaredDistance with the SquaredRadiusSum instead of using math.sqrt to get the real distance.
+        return distanceSquared <= radiusSum * radiusSum;
     }
 
-    private Collection<? extends IAsteroidSplitter> getAsteroidSplitters() { // loads all implementations of IAsteroidSplitter from module-path and returns it as a list.
-        return
-                ServiceLoader.load(IAsteroidSplitter.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private Collection<? extends IAsteroidSplitter> getAsteroidSplitters() {
+        return ServiceLoader.load(IAsteroidSplitter.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
-
