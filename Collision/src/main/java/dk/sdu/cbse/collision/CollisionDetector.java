@@ -80,8 +80,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         if (enemy.getHealth() <= 0) world.removeEntity(entity1);
 
                     } else if (e1IsPlayer && e2IsEnemy || e1IsEnemy && e2IsPlayer) {
-                        ((IDamageable) entity1).setBlinkRedUntil(1_500_000_000L);
-                        ((IDamageable) entity2).setBlinkRedUntil(1_500_000_000L);
+                        ((IDamageable) entity1).onHit();
+                        ((IDamageable) entity2).onHit();
 
                     } else if (e1IsEnemy || e2IsEnemy) {
                         // Do nothing if Enemy collides with another enemy

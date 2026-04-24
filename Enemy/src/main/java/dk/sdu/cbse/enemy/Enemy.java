@@ -13,6 +13,7 @@ public class Enemy extends Entity implements IDamageable, IHealth {
     @Override public int getHealth() { return health; }
     @Override public void setHealth(int health) { this.health = health; }
 
+    @Override public void onHit() { setBlinkRedUntil(1_500_000_000L); }
     @Override public boolean isBlinkingRed() { return System.nanoTime() < blinkRedUntil; }
     @Override public void setBlinkRedUntil(long durationNano) { blinkRedUntil = System.nanoTime() + durationNano; }
 }
