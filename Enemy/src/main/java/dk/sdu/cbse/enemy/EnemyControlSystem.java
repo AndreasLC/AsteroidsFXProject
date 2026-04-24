@@ -3,7 +3,6 @@ package dk.sdu.cbse.enemy;
 import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
-import dk.sdu.cbse.common.enemy.Enemy;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
 
 import static dk.sdu.cbse.enemy.EnemyPlugin.createEnemy;
@@ -25,8 +24,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
         for (Entity e : world.getEntities(Enemy.class))
         {
-            Enemy enemy = (Enemy) e;
-            if (enemy.isBlinkingRed()) {
+            if (e.isBlinkingRed()) {
                 e.setColor(now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
                 e.setFillColor(now % 500_000_000L < 250_000_000L ? "RED" : "BLACK");
             } else {
