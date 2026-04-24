@@ -60,7 +60,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         if (player.isInvisible()) continue;
                         player.setLives(player.getLives() - 1);
                         gameData.setLives(player.getLives());
-                        player.setInvisibleUntil(3_000_000_000L);
+                        player.onHit();
                         if (player.getLives() <= 0) world.removeEntity(playerEntity);
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
