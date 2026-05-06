@@ -49,16 +49,16 @@ public class PlayerControlSystem implements IEntityProcessingService {
             }
 
             if (player.isBlinkingRed()) {
-                String color = now % BLINK_INTERVAL < BLINK_HALF ? "RED" : "BLACK";
-                e.setColor(color);
-                e.setFillColor(color);
+                boolean flash = now % BLINK_INTERVAL < BLINK_HALF;
+                e.setColor(flash ? "RED" : "CYAN");
+                e.setFillColor(flash ? "DARKRED" : "DARKBLUE");
             } else if (player.isInvisible()) {
                 String color = now % INVISIBLE_INTERVAL < INVISIBLE_HALF ? "WHITE" : "BLACK";
                 e.setColor(color);
                 e.setFillColor(color);
             } else {
-                e.setColor("BLACK");
-                e.setFillColor("BLACK");
+                e.setColor("CYAN");
+                e.setFillColor("DARKBLUE");
             }
         }
     }

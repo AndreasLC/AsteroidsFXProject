@@ -30,7 +30,7 @@ public class AsteroidsPlugin implements IGamePluginService {
 
      static Entity createAsteroid(GameData gameData) {
         Entity asteroid = new Asteroid();
-        asteroid.setColor("BLACK");
+        asteroid.setColor("DIMGRAY");
         asteroid.setFillColor("GREY");
         Random rnd = new Random();
         float size = rnd.nextInt(50)+10; // random size between 10 - 59 for asteroid. Change if to big or small.

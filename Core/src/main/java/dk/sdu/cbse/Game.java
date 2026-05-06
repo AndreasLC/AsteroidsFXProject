@@ -40,9 +40,12 @@ public class Game {
 
     public void start(Stage window) throws Exception {
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        livesText.setFill(Color.WHITE);
+        destroyedText.setFill(Color.WHITE);
         gameWindow.getChildren().add(destroyedText);
         gameWindow.getChildren().add(livesText);
         Scene scene = new Scene(gameWindow);
+        scene.setFill(Color.BLACK);
         scene.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.LEFT)) {
                 gameData.GetGamekeys().setKey(GameKeys.LEFT, true);
@@ -159,7 +162,7 @@ public class Game {
             polygon.setStroke(Color.web(entity.getColor()));
             polygon.setFill(Color.web(entity.getFillColor()));
         }
-        gameData.getScoreService().ifPresent(s -> {
+        gameData.getScoreService().ifPresent(s -> {  // makes sure to only update text if module is present or else does nothing.
             livesText.setText("Lives Left: " + s.getLives());
             destroyedText.setText("Asteroids Destroyed: " + s.getScore());
         });
