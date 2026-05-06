@@ -68,6 +68,17 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         world.removeEntity(asteroid);
                         gameData.getScoreService().ifPresent(s -> s.addScore(1));
 
+                    } else if (entity1 instanceof Bullet && e2IsPlayer || e1IsPlayer && entity2 instanceof Bullet) {
+                        Entity bullet = entity1 instanceof Bullet ? entity1 : entity2;
+                        Entity playerEntity = e1IsPlayer ? entity1 : entity2;
+                        IDamageable player = (IDamageable) playerEntity;
+                        if (player.isInvisible()) continue;
+                        world.removeEntity(bullet);
+                        player.setLives(player.getLives() - 1);
+                        gameData.getScoreService().ifPresent(s -> s.setLives(player.getLives()));
+                        player.onHit();
+                        if (player.getLives() <= 0) world.removeEntity(playerEntity);
+
                     } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);
                         IHealth enemy = (IHealth) entity2;

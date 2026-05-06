@@ -13,8 +13,9 @@ public class Entity {
     private double rotation;
     private float radius;
 
-    private String color = "WHITE"; // Standard color of Entities and bullets.
-    private String fillColor = "BLACK"; // Standard fill color.
+    private String color = "WHITE";
+    private String fillColor = "BLACK";
+    private double speed = 1;
 
     public String getID()
     {
@@ -85,6 +86,9 @@ public class Entity {
     {
         return radius;
     }
+
+    public double getSpeed() { return speed; }
+    public void setSpeed(double speed) { this.speed = speed; }
 
 
 }
