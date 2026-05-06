@@ -4,16 +4,11 @@ public class GameData {
 
     private int displayWidth = 1024;
     private int displayHeight = 768;
-    private int lives = 3;
-    private int asteroidsDestroyed = 0;
-    public int getLives(){return lives;}
-    public void setLives(int lives){this.lives = lives;}
+    // Optional because the Score module is an optional JPMS plugin — the game runs without it
+    private java.util.Optional<dk.sdu.cbse.common.services.IScoreService> scoreService = java.util.Optional.empty();
 
-    public int getAsteroidsDestroyed(){return asteroidsDestroyed;}
-
-    public void setAsteroidsDestroyed(int asteroidsDestroyed) {
-        this.asteroidsDestroyed = asteroidsDestroyed;
-    }
+    public java.util.Optional<dk.sdu.cbse.common.services.IScoreService> getScoreService() { return scoreService; }
+    public void setScoreService(dk.sdu.cbse.common.services.IScoreService scoreService) { this.scoreService = java.util.Optional.of(scoreService); }
 
     private final GameKeys keys = new GameKeys();
 

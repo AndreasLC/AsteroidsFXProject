@@ -8,4 +8,5 @@ module Core {
     uses dk.sdu.cbse.common.services.IGamePluginService;
     uses dk.sdu.cbse.common.services.IEntityProcessingService;
     uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
+    uses dk.sdu.cbse.common.services.IScoreService;
 }
