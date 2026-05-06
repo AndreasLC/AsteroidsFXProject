@@ -125,5 +125,6 @@
       <module>Collision</module>
 <module>Enemy</module>
     <module>Score</module>
+      <module>Stars</module>
   </modules>
 </project>
