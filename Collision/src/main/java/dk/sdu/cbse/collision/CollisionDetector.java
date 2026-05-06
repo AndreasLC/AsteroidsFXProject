@@ -31,7 +31,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 Entity entity1 = entities.get(i);
                 Entity entity2 = entities.get(j);
 
-                if (entity1.getClass() == entity2.getClass()) continue;
+                if (entity1.getClass() == entity2.getClass()) continue; // Two of the same objects cant collide.
+                if ("Star".equals(entity1.getType()) || "Star".equals(entity2.getType())) continue; // No collision with stars.
 
                 boolean e1IsPlayer = isPlayer(entity1);
                 boolean e1IsEnemy  = isEnemy(entity1);
