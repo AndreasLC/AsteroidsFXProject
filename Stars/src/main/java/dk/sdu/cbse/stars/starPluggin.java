@@ -27,8 +27,6 @@ public class starPluggin implements IGamePluginService {
     private Entity createStar(GameData gameData)
     {
         Entity star = new stars();
-        star.setColor("white");
-        star.setFillColor("white");
         Random rnd = new Random();
         double s = rnd.nextDouble(1.5) + 0.5;
         star.setPolygonCoordinates(-s, -s, s, -s, s, s, -s, s);

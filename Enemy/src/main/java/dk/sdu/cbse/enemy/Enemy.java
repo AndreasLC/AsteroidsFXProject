@@ -8,7 +8,12 @@ public class Enemy extends Entity implements IDamageable, IHealth {
     private int health = 150;
     private long blinkRedUntil = 0;
 
-    public Enemy() { setType("Enemy"); }
+    public Enemy() {
+        setType("Enemy");
+        setSpeed(0.25);
+        setColor("DARKGREEN");
+        setFillColor("GREEN");
+    }
 
     @Override public int getHealth() { return health; }
     @Override public void setHealth(int health) { this.health = health; }

@@ -34,14 +34,14 @@ public class PlayerControlSystem implements IEntityProcessingService {
             if (gameData.GetGamekeys().keyIsDown(GameKeys.UP)) {
                 double changeX = Math.cos(Math.toRadians(e.getRotation()));
                 double changeY = Math.sin(Math.toRadians(e.getRotation()));
-                e.setX(e.getX() + changeX);
-                e.setY(e.getY() + changeY);
+                e.setX(e.getX() + changeX * e.getSpeed());
+                e.setY(e.getY() + changeY * e.getSpeed());
             }
             if (gameData.GetGamekeys().keyIsDown(GameKeys.DOWN)) {
                 double changeX = Math.cos(Math.toRadians(e.getRotation()));
                 double changeY = Math.sin(Math.toRadians(e.getRotation()));
-                e.setX(e.getX() - changeX);
-                e.setY(e.getY() - changeY);
+                e.setX(e.getX() - changeX * e.getSpeed());
+                e.setY(e.getY() - changeY * e.getSpeed());
             }
             if (gameData.GetGamekeys().keyIsDown(GameKeys.SPACE) && now - lastShot > SHOT_COOLDOWN) {
                 getBulletSPIs().stream().findFirst().ifPresent(spi -> world.addEntity(spi.createBullet(e, gameData)));

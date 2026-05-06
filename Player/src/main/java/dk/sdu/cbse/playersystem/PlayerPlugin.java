@@ -46,8 +46,6 @@ public class PlayerPlugin implements IGamePluginService {
         player.setX(gameData.getDisplayWidth()/2); // to make sure that the player spawn in the middle of the screen.
         player.setY(gameData.getDisplayHeight()/2);
         player.setRadius(8f);
-        player.setColor("CYAN");
-        player.setFillColor("DARKBLUE");
         return player;
     }
 }

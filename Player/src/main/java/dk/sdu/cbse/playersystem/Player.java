@@ -8,7 +8,12 @@ public class Player extends Entity implements IDamageable {
     private long invisibleUntil = 0;
     private long blinkRedUntil = 0;
 
-    public Player() { setType("Player"); }
+    public Player() {
+        setType("Player");
+        setSpeed(1);
+        setColor("CYAN");
+        setFillColor("DARKBLUE");
+    }
 
     @Override public int getLives() { return lives; }
     @Override public void setLives(int lives) { this.lives = lives; }

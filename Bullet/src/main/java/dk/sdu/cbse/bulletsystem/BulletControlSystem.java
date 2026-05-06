@@ -14,8 +14,8 @@ public class BulletControlSystem implements IEntityProcessingService , BulletSPI
             for (Entity bullet : world.getEntities(Bullet.class)) {
                 double changeX = Math.cos(Math.toRadians(bullet.getRotation()));
                 double changeY = Math.sin(Math.toRadians(bullet.getRotation()));
-                bullet.setX(bullet.getX() + changeX * 8); // Faster bullet, to make it look like a laser.
-                bullet.setY(bullet.getY() + changeY * 8);
+                bullet.setX(bullet.getX() + changeX * bullet.getSpeed());
+                bullet.setY(bullet.getY() + changeY * bullet.getSpeed());
             }
     }
 
@@ -25,8 +25,6 @@ public class BulletControlSystem implements IEntityProcessingService , BulletSPI
         double changeY = Math.sin(Math.toRadians(shooter.getRotation()));
 
         Entity bullet = new Bullet();
-        bullet.setColor("RED");
-        bullet.setFillColor("RED");
         bullet.setPolygonCoordinates(-20, -1,  20, -1,  20, 1,  -20, 1); // longer bullet, to make it look like a laser.
         bullet.setX(shooter.getX() - 9 + changeX * 50);
         bullet.setY(shooter.getY() + changeY * 50);
