@@ -43,7 +43,7 @@
           <arguments>
             <argument>--module-path=mods-mvn</argument>
             <argument>--class-path=libs/*</argument>
-            <argument>--add-modules=javafx.graphics</argument>
+            <argument>--add-modules=ALL-MODULE-PATH</argument>
             <argument>--module=Core/dk.sdu.cbse.Main</argument>
           </arguments>
         </configuration>
@@ -70,6 +70,9 @@
                 </fileset>
                 <fileset>
                   <directory>libs</directory>
+                </fileset>
+                <fileset>
+                  <directory>plugins</directory>
                 </fileset>
               </filesets>
             </configuration>

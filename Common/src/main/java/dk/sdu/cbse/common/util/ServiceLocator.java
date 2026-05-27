@@ -41,6 +41,11 @@ ServiceLocator(){
     }
 }
 public <T> List<T> locateAll(Class<T> serviceClass) {
+    // Declare service use at runtime so Common's module-info doesn't need a
+    // static `uses` directive (which would force `requires` on SPI modules and
+    // create a circular dependency).
+    ServiceLocator.class.getModule().addUses(serviceClass);
+
     ServiceLoader<T> loader = serviceLoadermap.get(serviceClass);
     if (loader == null) {
         loader = ServiceLoader.load(layer ,serviceClass);

@@ -9,13 +9,11 @@ import dk.sdu.cbse.common.data.IDamageable;
 import dk.sdu.cbse.common.data.IHealth;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.cbse.common.util.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
 
 public class CollisionDetector implements IPostEntityProcessingService {
 
@@ -116,6 +114,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
     }
 
     private Collection<? extends IAsteroidSplitter> getAsteroidSplitters() {
-        return ServiceLoader.load(IAsteroidSplitter.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLocator.INSTANCE.locateAll(IAsteroidSplitter.class);
     }
 }

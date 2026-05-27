@@ -7,6 +7,7 @@ import dk.sdu.cbse.common.services.IEntityProcessingService;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import dk.sdu.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.cbse.common.services.IScoreService;
+import dk.sdu.cbse.common.util.ServiceLocator;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -18,7 +19,6 @@ import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
@@ -104,7 +104,7 @@ public class Game {
                 gameData.GetGamekeys().setKey(GameKeys.DOWN, false);
             }
         });
-        ServiceLoader.load(IScoreService.class).findFirst()
+        ServiceLocator.INSTANCE.locateAll(IScoreService.class).stream().findFirst()
                 .ifPresent(gameData::setScoreService);
 
         for (IGamePluginService iGamePlugin : getGamePluginServices()) {
