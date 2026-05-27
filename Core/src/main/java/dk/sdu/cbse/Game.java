@@ -106,6 +106,7 @@ public class Game {
         });
         ServiceLocator.INSTANCE.locateAll(IScoreService.class).stream().findFirst()
                 .ifPresent(gameData::setScoreService);
+        gameData.getScoreService().ifPresent(IScoreService::reset);
 
         for (IGamePluginService iGamePlugin : getGamePluginServices()) {
             iGamePlugin.start(gameData, world);

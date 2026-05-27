@@ -5,4 +5,5 @@ public interface IScoreService {
     int getScore();
     void setLives(int lives);
     int getLives();
+    void reset();
 }
