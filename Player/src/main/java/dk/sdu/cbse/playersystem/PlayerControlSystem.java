@@ -7,11 +7,9 @@ import dk.sdu.cbse.common.data.GameKeys;
 import dk.sdu.cbse.common.data.IDamageable;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
+import dk.sdu.cbse.common.util.ServiceLocator;
 
 import java.util.Collection;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IEntityProcessingService {
     private static final long SHOT_COOLDOWN    = 250_000_000L;
@@ -64,6 +62,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
     }
 
     private Collection<? extends BulletSPI> getBulletSPIs() {
-        return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLocator.INSTANCE.locateAll(BulletSPI.class);
     }
 }

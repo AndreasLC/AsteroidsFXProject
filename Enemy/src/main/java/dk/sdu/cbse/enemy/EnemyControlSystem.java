@@ -5,12 +5,9 @@ import dk.sdu.cbse.common.data.Entity;
 import dk.sdu.cbse.common.data.GameData;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IEntityProcessingService;
-
-import java.util.Collection;
-import java.util.ServiceLoader;
+import dk.sdu.cbse.common.util.ServiceLocator;
 
 import static dk.sdu.cbse.enemy.EnemyPlugin.createEnemy;
-import static java.util.stream.Collectors.toList;
 
 public class EnemyControlSystem implements IEntityProcessingService {
     private static final long spawnInterval =  30_000_000_000L; // 30 sekunder mellem hver spawn
@@ -57,7 +54,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 // Skyd mod spilleren hvis cooldown er overstået
                 if (now - lastShot > SHOT_COOLDOWN) {
-                    ServiceLoader.load(BulletSPI.class).findFirst()
+                    ServiceLocator.INSTANCE.locateAll(BulletSPI.class).stream().findFirst()
                             .ifPresent(spi -> world.addEntity(spi.createBullet(e, gameData)));
                     lastShot = now;
                 }
