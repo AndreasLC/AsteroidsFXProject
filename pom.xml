@@ -71,9 +71,6 @@
                 <fileset>
                   <directory>libs</directory>
                 </fileset>
-                <fileset>
-                  <directory>plugins</directory>
-                </fileset>
               </filesets>
             </configuration>
           </plugin>
