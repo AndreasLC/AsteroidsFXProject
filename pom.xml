@@ -43,7 +43,7 @@
           <arguments>
             <argument>--module-path=mods-mvn</argument>
             <argument>--class-path=libs/*</argument>
-            <argument>--add-modules=ALL-MODULE-PATH</argument>
+            <argument>--add-modules=ALL-MODULE-PATH,java.net.http</argument>
             <argument>--module=Core/dk.sdu.cbse.Main</argument>
           </arguments>
         </configuration>
@@ -126,5 +126,7 @@
 <module>Enemy</module>
     <module>Score</module>
       <module>Stars</module>
+    <module>ScoreServer</module>
+    <module>ScoreClient</module>
   </modules>
 </project>

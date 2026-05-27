@@ -9,15 +9,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Score</artifactId>
+    <artifactId>ScoreServer</artifactId>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>dk.sdu.cbse</groupId>
-            <artifactId>Common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
@@ -29,9 +23,6 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-                    <!-- Score is no longer auto-deployed to plugins/ — ScoreClient (HTTP client) provides
-                         IScoreService now. Copy Score-*.jar manually from target/ into plugins/ to use
-                         the in-memory implementation as a fallback. -->
                     <execution>
                         <id>copy-installed</id>
                         <phase>none</phase>

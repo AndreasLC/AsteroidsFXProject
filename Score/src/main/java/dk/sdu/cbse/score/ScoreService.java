@@ -10,4 +10,5 @@ public class ScoreService implements IScoreService {
     @Override public int getScore() { return score; }
     @Override public void setLives(int lives) { this.lives = lives; }
     @Override public int getLives() { return lives; }
+    @Override public void reset() { score = 0; lives = 3; }
 }
