@@ -7,4 +7,8 @@ public interface IDamageable {
 
     default boolean isInvisible() { return false; }
     default void setInvisibleUntil(long durationNano) {}
+
+    default boolean canTakeDamage() { return true; }
+    default void applyDamage() {}
+    default boolean isDead() { return false; }
 }

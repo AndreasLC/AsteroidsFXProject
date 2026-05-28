@@ -57,8 +57,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         Entity playerEntity = e1IsPlayer ? entity1 : entity2;
                         Entity asteroid = e1IsPlayer ? entity2 : entity1;
                         IDamageable player = (IDamageable) playerEntity;
-                        if (player.isInvisible()) continue;
-                        damage(playerEntity, 1, world);
+                        if (!player.canTakeDamage()) continue;
+                        damage(playerEntity, world);
                         gameData.getScoreService().ifPresent(s -> s.setLives(((IHealth) playerEntity).getHealth()));
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
@@ -69,18 +69,18 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         Entity bullet = entity1 instanceof Bullet ? entity1 : entity2;
                         Entity playerEntity = e1IsPlayer ? entity1 : entity2;
                         IDamageable player = (IDamageable) playerEntity;
-                        if (player.isInvisible()) continue;
+                        if (!player.canTakeDamage()) continue;
                         world.removeEntity(bullet);
-                        damage(playerEntity, 1, world);
+                        damage(playerEntity, world);
                         gameData.getScoreService().ifPresent(s -> s.setLives(((IHealth) playerEntity).getHealth()));
 
                     } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);
-                        damage(entity2, 25, world);
+                        damage(entity2, world);
 
                     } else if (e1IsEnemy && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
-                        damage(entity1, 25, world);
+                        damage(entity1, world);
 
                     } else if (e1IsPlayer && e2IsEnemy || e1IsEnemy && e2IsPlayer) {
                         ((IDamageable) entity1).onHit();
@@ -116,11 +116,10 @@ public class CollisionDetector implements IPostEntityProcessingService {
         return shooterType != null && shooterType.equals(victim.getType());
     }
 
-    private void damage(Entity victim, int amount, World world) {
-        if (victim instanceof IHealth h) {
-            h.setHealth(h.getHealth() - amount);
-            if (victim instanceof IDamageable d) d.onHit();
-            if (h.getHealth() <= 0) world.removeEntity(victim);
+    private void damage(Entity victim, World world) {
+        if (victim instanceof IDamageable d) {
+            d.applyDamage();
+            if (d.isDead()) world.removeEntity(victim);
         }
     }
 

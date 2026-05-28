@@ -22,6 +22,14 @@ public class Player extends Entity implements IDamageable, IHealth {
     @Override public boolean isInvisible() { return System.nanoTime() < invisibleUntil; }
     @Override public void setInvisibleUntil(long durationNano) { invisibleUntil = System.nanoTime() + durationNano; }
 
+    @Override public boolean canTakeDamage() { return !isInvisible(); }
+
+    @Override public void applyDamage() {
+        health--;
+        onHit();
+    }
+    @Override public boolean isDead() { return health <= 0; }
+
     @Override public void onHit() {
         setBlinkRedUntil(1_500_000_000L);
         setInvisibleUntil(3_000_000_000L);
