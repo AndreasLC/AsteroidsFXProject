@@ -24,7 +24,8 @@ public class BulletControlSystem implements IEntityProcessingService , BulletSPI
         double changeX = Math.cos(Math.toRadians(shooter.getRotation()));
         double changeY = Math.sin(Math.toRadians(shooter.getRotation()));
 
-        Entity bullet = new Bullet();
+        Bullet bullet = new Bullet();
+        bullet.setShooterType(shooter.getType());
         bullet.setPolygonCoordinates(-20, -1,  20, -1,  20, 1,  -20, 1); // longer bullet, to make it look like a laser.
         bullet.setX(shooter.getX() - 9 + changeX * 50);
         bullet.setY(shooter.getY() + changeY * 50);
