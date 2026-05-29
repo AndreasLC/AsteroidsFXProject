@@ -2,7 +2,7 @@ package dk.sdu.cbse.common.data;
 
 import java.util.UUID;
 
-public class Entity {
+public abstract class Entity {
     private final UUID ID = UUID.randomUUID();
 
     private String type;
