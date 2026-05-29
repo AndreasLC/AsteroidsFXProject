@@ -31,6 +31,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
 
                 if (entity1.getClass() == entity2.getClass()) continue; // Two of the same objects cant collide.
                 if ("Star".equals(entity1.getType()) || "Star".equals(entity2.getType())) continue; // No collision with stars.
+                if (friendlyFire(entity1, entity2)) continue; // A bullet never hits an entity of the same type as its shooter.
 
                 boolean e1IsPlayer = isPlayer(entity1);
                 boolean e1IsEnemy  = isEnemy(entity1);
@@ -56,11 +57,9 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         Entity playerEntity = e1IsPlayer ? entity1 : entity2;
                         Entity asteroid = e1IsPlayer ? entity2 : entity1;
                         IDamageable player = (IDamageable) playerEntity;
-                        if (player.isInvisible()) continue;
-                        player.setLives(player.getLives() - 1);
-                        gameData.getScoreService().ifPresent(s -> s.setLives(player.getLives()));
-                        player.onHit();
-                        if (player.getLives() <= 0) world.removeEntity(playerEntity);
+                        if (!player.canTakeDamage()) continue;
+                        damage(playerEntity, world);
+                        gameData.getScoreService().ifPresent(s -> s.setLives(((IHealth) playerEntity).getHealth()));
                         getAsteroidSplitters().stream().findFirst()
                                 .ifPresent(splitter -> splitter.createAsteroidsSpilt(asteroid, world));
                         world.removeEntity(asteroid);
@@ -70,24 +69,18 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         Entity bullet = entity1 instanceof Bullet ? entity1 : entity2;
                         Entity playerEntity = e1IsPlayer ? entity1 : entity2;
                         IDamageable player = (IDamageable) playerEntity;
-                        if (player.isInvisible()) continue;
+                        if (!player.canTakeDamage()) continue;
                         world.removeEntity(bullet);
-                        player.setLives(player.getLives() - 1);
-                        gameData.getScoreService().ifPresent(s -> s.setLives(player.getLives()));
-                        player.onHit();
-                        if (player.getLives() <= 0) world.removeEntity(playerEntity);
+                        damage(playerEntity, world);
+                        gameData.getScoreService().ifPresent(s -> s.setLives(((IHealth) playerEntity).getHealth()));
 
                     } else if (entity1 instanceof Bullet && e2IsEnemy) {
                         world.removeEntity(entity1);
-                        IHealth enemy = (IHealth) entity2;
-                        enemy.setHealth(enemy.getHealth() - 25);
-                        if (enemy.getHealth() <= 0) world.removeEntity(entity2);
+                        damage(entity2, world);
 
                     } else if (e1IsEnemy && entity2 instanceof Bullet) {
                         world.removeEntity(entity2);
-                        IHealth enemy = (IHealth) entity1;
-                        enemy.setHealth(enemy.getHealth() - 25);
-                        if (enemy.getHealth() <= 0) world.removeEntity(entity1);
+                        damage(entity1, world);
 
                     } else if (e1IsPlayer && e2IsEnemy || e1IsEnemy && e2IsPlayer) {
                         ((IDamageable) entity1).onHit();
@@ -102,6 +95,31 @@ public class CollisionDetector implements IPostEntityProcessingService {
                     }
                 }
             }
+        }
+    }
+
+    private boolean friendlyFire(Entity first, Entity second) {
+        Bullet bullet;
+        Entity victim;
+
+        if (first instanceof Bullet b) {
+            bullet = b;
+            victim = second;
+        } else if (second instanceof Bullet b) {
+            bullet = b;
+            victim = first;
+        } else {
+            return false;
+        }
+
+        String shooterType = bullet.getShooterType();
+        return shooterType != null && shooterType.equals(victim.getType());
+    }
+
+    private void damage(Entity victim, World world) {
+        if (victim instanceof IDamageable d) {
+            d.applyDamage();
+            if (d.isDead()) world.removeEntity(victim);
         }
     }
 
