@@ -13,7 +13,7 @@ public class GameKeys {
     public static final int SPACE = 4;
 
 
-    public GameKeys() // Contructer inizialing the two arrays with the given size of 4. All set to false, because this is default.
+    public GameKeys() // Contructer inizialing the two arrays with the given size of 5. All set to false, because this is default.
     {
         keys = new boolean[Num_Keys];
         pkeys = new boolean[Num_Keys];
