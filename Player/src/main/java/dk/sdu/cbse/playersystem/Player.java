@@ -6,7 +6,7 @@ import dk.sdu.cbse.common.data.IHealth;
 
 public class Player extends Entity implements IDamageable, IHealth {
     private int health = 3;
-    private long invisibleUntil = 0;
+    private long invincibleUntil = 0;
     private long blinkRedUntil = 0;
 
     public Player() {
@@ -18,10 +18,10 @@ public class Player extends Entity implements IDamageable, IHealth {
 
     @Override public int getHealth() { return health; }
 
-    @Override public boolean isInvisible() { return System.nanoTime() < invisibleUntil; }
-    @Override public void setInvisibleUntil(long durationNano) { invisibleUntil = System.nanoTime() + durationNano; }
+    @Override public boolean isInvincible() { return System.nanoTime() < invincibleUntil; }
+    @Override public void setInvincibleUntil(long durationNano) { invincibleUntil = System.nanoTime() + durationNano; }
 
-    @Override public boolean canTakeDamage() { return !isInvisible(); }
+    @Override public boolean canTakeDamage() { return !isInvincible(); }
 
     @Override public void applyDamage() {
         health--;
@@ -31,7 +31,7 @@ public class Player extends Entity implements IDamageable, IHealth {
 
     @Override public void onHit() {
         setBlinkRedUntil(1_500_000_000L);
-        setInvisibleUntil(3_000_000_000L);
+        setInvincibleUntil(3_000_000_000L);
     }
     @Override public boolean isBlinkingRed() { return System.nanoTime() < blinkRedUntil; }
     @Override public void setBlinkRedUntil(long durationNano) { blinkRedUntil = System.nanoTime() + durationNano; }
