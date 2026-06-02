@@ -5,8 +5,8 @@ public interface IDamageable {
     boolean isBlinkingRed();
     void setBlinkRedUntil(long durationNano);
 
-    default boolean isInvisible() { return false; }
-    default void setInvisibleUntil(long durationNano) {}
+    default boolean isInvincible() { return false; }
+    default void setInvincibleUntil(long durationNano) {}
 
     default boolean canTakeDamage() { return true; }
     default void applyDamage() {}

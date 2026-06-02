@@ -50,7 +50,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 boolean flash = now % BLINK_INTERVAL < BLINK_HALF;
                 e.setColor(flash ? "RED" : "CYAN");
                 e.setFillColor(flash ? "DARKRED" : "DARKBLUE");
-            } else if (player.isInvisible()) {
+            } else if (player.isInvincible()) {
                 String color = now % INVISIBLE_INTERVAL < INVISIBLE_HALF ? "WHITE" : "BLACK";
                 e.setColor(color);
                 e.setFillColor(color);
