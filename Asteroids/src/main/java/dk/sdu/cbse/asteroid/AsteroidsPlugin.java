@@ -48,8 +48,16 @@ public class AsteroidsPlugin implements IGamePluginService {
                 coords[8],  coords[9],  coords[10], coords[11],
                 coords[12], coords[13], coords[14], coords[15]
         );
-        asteroid.setX(0);
-        asteroid.setY(0);
+
+        int w = gameData.getDisplayWidth();
+        int h = gameData.getDisplayHeight();
+        // Switch for picking a random edge to spawn the asteroid.
+        switch (rnd.nextInt(4)) {
+            case 0 -> { asteroid.setX(rnd.nextInt(w)); asteroid.setY(0); }  // top
+            case 1 -> { asteroid.setX(rnd.nextInt(w)); asteroid.setY(h); }  // bottom
+            case 2 -> { asteroid.setX(0);              asteroid.setY(rnd.nextInt(h)); } // left
+            default -> { asteroid.setX(w);             asteroid.setY(rnd.nextInt(h)); } // right
+        }
         asteroid.setRadius(size);
         asteroid.setRotation(rnd.nextInt(360)); // rotates the asteroids in random direction in full 360 spectrum.
         return asteroid;
