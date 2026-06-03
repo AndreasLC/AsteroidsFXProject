@@ -39,7 +39,6 @@
 
     <build>
         <plugins>
-            <!-- Repackage into an executable (fat) jar: java -jar ScoreServer-1.0-SNAPSHOT.jar -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -55,7 +54,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- This standalone service is not copied into the game's module path -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>

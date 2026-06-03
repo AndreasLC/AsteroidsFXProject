@@ -29,9 +29,6 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-                    <!-- Score is no longer auto-deployed to plugins/ — ScoreClient (HTTP client) provides
-                         IScoreService now. Copy Score-*.jar manually from target/ into plugins/ to use
-                         the in-memory implementation as a fallback. -->
                     <execution>
                         <id>copy-installed</id>
                         <phase>none</phase>
