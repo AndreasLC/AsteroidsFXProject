@@ -2,5 +2,5 @@
 
 ## To run the program
 ## mvn clean install
-## mvn -pl ScoreServer spring-boot:run
+## In another terminal:  mvn -pl ScoreServer spring-boot:run
 ## mvn exec:exec
